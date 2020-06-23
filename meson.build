@@ -7,9 +7,13 @@ hidapi_sources = [
 ]
 hidapi_link_args = []
 if host_machine.system() == 'windows'
-  hidapi_sources += 'windows/hid.c'
+  hidapi_sources += 'libusb/hid.c'
   cc = meson.get_compiler('c')
-  hidapi_deps = cc.find_library('setupapi', required : true)
+  hidapi_deps = [
+    dependency('libusb-1.0', required : true),
+    dependency('threads')
+  ]
+  hidapi_deps += cc.find_library('setupapi', required : true)
   hidapi_link_args += '-Wall'
 elif host_machine.system() == 'linux'
   hidapi_sources += 'libusb/hid.c'

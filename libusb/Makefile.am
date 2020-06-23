@@ -21,6 +21,13 @@ libhidapi_la_LDFLAGS = $(LTLDFLAGS)
 libhidapi_la_LIBADD = $(LIBS_LIBUSB)
 endif
 
+if OS_WINDOWS
+lib_LTLIBRARIES = libhidapi-libusb.la
+libhidapi_libusb_la_SOURCES = hid.c
+libhidapi_libusb_la_LDFLAGS = $(LTLDFLAGS) $(PTHREAD_CFLAGS)
+libhidapi_libusb_la_LIBADD = $(LIBS_LIBUSB)
+endif
+
 hdrdir = $(includedir)/hidapi
 hdr_HEADERS = $(top_srcdir)/hidapi/hidapi.h
 

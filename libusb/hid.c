@@ -506,7 +506,7 @@ int HID_API_EXPORT hid_init(void)
 		/* Init Libusb */
 		if (libusb_init(&usb_context))
 			return -1;
-
+		
 		/* Set the locale if it's not set. */
 		locale = setlocale(LC_CTYPE, NULL);
 		if (!locale)
