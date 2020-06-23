@@ -178,6 +178,32 @@ extern "C" {
 		*/
 		HID_API_EXPORT hid_device * HID_API_CALL hid_open_path(const char *path);
 
+		/** @brief Write an RAW bulk report to a HID device.
+
+			While bulk transport is usually not part of the HID spec, this
+			is required by devices with a 'incomplete' or 'weird' HID header.
+			This means that we have to fallback on USB for setting data
+			directly. Example case would be PSVR on Windows
+			Currently this uses raw USB bulk transport, but other backend
+			methods may be added later.
+
+			hid_raw_bulk_write() will send the data on the first OUT endpoint, if
+			one exists. If it does not, it will send the data through
+			the Control Endpoint (Endpoint 0).
+
+			@ingroup API
+			@param device A device handle returned from hid_open().
+			@param data The data to send, including the report number as
+				the first byte.
+			@param length The length in bytes of the data to send.
+
+			@returns
+				This function returns the actual number of bytes written and
+				-1 on error.
+		*/
+
+		int  HID_API_EXPORT HID_API_CALL hid_raw_bulk_write(hid_device *device, const unsigned char *data, size_t length);
+
 		/** @brief Write an Output report to a HID device.
 
 			The first byte of @p data[] must contain the Report ID. For
@@ -204,6 +230,7 @@ extern "C" {
 				This function returns the actual number of bytes written and
 				-1 on error.
 		*/
+
 		int  HID_API_EXPORT HID_API_CALL hid_write(hid_device *device, const unsigned char *data, size_t length);
 
 		/** @brief Read an Input report from a HID device with timeout.
